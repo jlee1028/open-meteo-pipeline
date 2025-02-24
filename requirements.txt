@@ -1,0 +1,4 @@
+requests
+pydantic
+SQLAlchemy
+psycopg2
