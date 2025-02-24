@@ -3,7 +3,7 @@
 ## Overview
 This project retrieves JSON weather data from the [Open-Meteo API](https://open-meteo.com/) using a custom API client. Data pipelines process the JSON response, shred the data into a relational schema, and write it to a postgres database.
 
-## Features
+## Modules
 - **api_client:** A wrapper library for the open-meteo endpoints, including data classes for shredding JSON response data and ORM classes for creating and interacting with database tables
 - **pipeline_blueprints:** Data pipelines for various open-meteo data topics, such as current weather and hourly forecast data
 - **utils.py:** Reusable functions that perform a single task
