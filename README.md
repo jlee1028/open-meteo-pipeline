@@ -1,33 +1,12 @@
 # Open-Meteo Weather Data Pipeline
 
 ## Overview
-This project retrieves JSON weather data from the [Open-Meteo API](https://open-meteo.com/) using a custom API client. Data pipelines process the JSON response, shred the data into a relational schema, and write it to a postgres database.
-
-## Modules
-- **api_client:** A wrapper library for the open-meteo endpoints, including data classes for shredding JSON response data and ORM classes for creating and interacting with database tables
-- **pipeline_blueprints:** Data pipelines for various open-meteo data topics, such as current weather and hourly forecast data
-- **utils.py:** Reusable functions that perform a single task
-- **main.py:** Entry point for the data pipelines
-
-## Architecture
-1. **API Client Layer**
-   - Handles API calls, response validation, and deserializing JSON response into python objects 
-   - Uses rest_adapter.RestAdapter to perform HTTP requests
-2. **Data Modeling Layer**
-   - Normalizes the JSON response into python objects that form the basis for a relational database schema
-   - Uses classes which inherit from pydantic's BaseModel
-3. **ORM Layer**
-   - Establishes the database schema into which the shredded JSON data will be loaded
-   - Includes table definitions, primary and foreign key constraints
-4. **Data Pipeline Layer**
-   - Extracts weather data from open-meteo using the API client
-   - Transforms the JSON response into a structured relational schema using the data models
-   - Loads the data into postgres using the ORM functionality
+This project retrieves weather data from the [Open-Meteo API](https://open-meteo.com/) using a custom API client and data pipelines orchestrated with dagster. The pipelines normalize the json response into a relational schema and write it to a postgres database.
 
 ## Installation
 
 ### Prerequisites
-- Python
+- Python3.9+
 - PostgreSQL
 - pip and virtualenv
 
@@ -43,9 +22,9 @@ This project retrieves JSON weather data from the [Open-Meteo API](https://open-
    macos: source .venv/bin/activate
    windows: .venv\Scripts\activate
    ```
-3. Install dependencies:
+3. Install the project in editable mode:
    ```sh
-   pip install -r requirements.txt
+   pip install -e ".[dev]"
    ```
 4. Configure environment variables (e.g., in a `.env` file):
    ```ini
@@ -57,13 +36,18 @@ This project retrieves JSON weather data from the [Open-Meteo API](https://open-
 
 ## Usage
 
-### Running the Pipeline
-To fetch and store weather data:
+### Running the Pipelines
+Run the dagster webserver:
 ```sh
-python main.py
+dagster dev
 ```
 
-### Example API Call
+Then go to the dagster UI in your browser (http://127.0.0.1:3000) and materialize all or specific assets:
+
+![dagster_ui](dagster_ui.png)
+
+
+### Using the API client
 
 Get location object:
 ```python
@@ -82,6 +66,7 @@ for k, v in redmond.model_dump().items():
 Get weather data for location:
 ```python
 from api_client.weather_forecast.client import WeatherForecastClient
+
 weather_client = WeatherForecastClient()
 
 # get current weather for redmond
@@ -107,7 +92,7 @@ for k, v in daily_forecast.daily.model_dump().items():
 ```
 
 ## Database Schema
-The JSON response is shredded into the following relational tables:
+The json reponses from the open-meteo api are normalized into the following relational tables:
 ### dimensional data
 - **location:** location data - each record represents a unique location. Records are upserted
 - **current_unit_config:** stores unique configuration of units of measurement for *current* weather variables (e.g inches or centimeters of rain). Records are upserted

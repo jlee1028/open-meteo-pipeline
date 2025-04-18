@@ -1,4 +1,7 @@
 requests
 pydantic
 SQLAlchemy
-psycopg2
+psycopg2-binary
+boto3
+dagster
+dagster-webserver

@@ -1,4 +1,4 @@
-from api_client.base_schema import Base, TimestampMixin
+from ..base_schema import Base, TimestampMixin
 from sqlalchemy import Column, String, Integer, Float, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 
