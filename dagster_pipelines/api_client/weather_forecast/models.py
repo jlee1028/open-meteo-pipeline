@@ -2,8 +2,7 @@ from pydantic import BaseModel, Field, computed_field
 from typing import Optional
 from datetime import datetime
 import uuid
-from utils import make_guid
-import json
+from ...utils import make_guid
 
 class HourlyWeatherVar(BaseModel):
     time: list[datetime]

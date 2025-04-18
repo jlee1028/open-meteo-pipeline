@@ -2,7 +2,7 @@ from ..rest_adapter import RestAdapter
 from ..exceptions import ApiDataException
 from json.decoder import JSONDecodeError
 from .models import CurrentWeather, HourlyForecast, DailyForecast
-from api_client.geocoding.models import Location
+from ..geocoding.models import Location
 
 class WeatherForecastClient:
     def __init__(self):

@@ -2,6 +2,31 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 import logging
 import sys
+import json
+import boto3
+from botocore.exceptions import ClientError
+
+if TYPE_CHECKING:
+    import uuid
+
+def get_secret(secret_name, region_name) -> dict:
+
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        raise e
+
+    secret = get_secret_value_response['SecretString']
+
+    return json.loads(secret)
 
 if TYPE_CHECKING:
     import uuid
