@@ -39,6 +39,11 @@ This project retrieves weather data from the [Open-Meteo API](https://open-meteo
 ### Running the Pipelines
 Run the dagster webserver:
 ```sh
+docker-compose up --build
+```
+
+(without docker)
+```sh
 dagster dev
 ```
 
