@@ -1,6 +1,6 @@
 from dagster import (
     Definitions,
-    # EnvVar,
+    EnvVar,
     load_assets_from_modules
 )
 from .resources import PostgresResource, OpenMeteoApiResource
@@ -11,9 +11,9 @@ from .assets import (
     daily_forecast,
     hourly_forecast
 )
-from .utils import get_secret
+# from .utils import get_secret
 
-postgres_credentials = get_secret(secret_name='jws_db_credentials', region_name='us-west-2')
+# postgres_credentials = get_secret(secret_name='jws_db_credentials', region_name='us-west-2')
 
 defs = Definitions(
     assets=load_assets_from_modules([
@@ -25,12 +25,12 @@ defs = Definitions(
         ]),
     resources={
         "postgres": PostgresResource(
-            host=postgres_credentials['db_endpoint'],
+            host=EnvVar('PG_ENDPOINT'),
             port=5432,
             database='jws_db_dev',
             drivername="postgresql",
-            username=postgres_credentials['dev_user'],
-            password=postgres_credentials['dev_password']
+            username=EnvVar('DEV_USER'),
+            password=EnvVar('DEV_PW')
         ),
         "open_meteo": OpenMeteoApiResource()
     }

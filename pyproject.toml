@@ -1,7 +1,7 @@
 [project]
-name = "open-meteo-pipeline"
+name = "open-meteo-dagster"
 version = "0.0.1"
-description = "Build data pipelines using the Open-Meteo API"
+description = "Open Meteo API Pipeline Orchestrated Using Dagster"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
